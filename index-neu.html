@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WKC Merch Shop</title>
+    <!--<link rel="preconnect" href="https://fonts.googleapis.com">-->
+    <!--<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
+    <!--<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">-->
+    <style>
+        /* Lokale Schriftart: Bebas Neue (Fallback: Google Fonts) */
+        @font-face {
+            font-family: 'Bebas Neue';
+            src: local('Bebas Neue'),
+                 url('Bebas_Neue/BebasNeue-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        /* ═══════════════════════════════════════════════
+           CSS VARIABLES
+           ═══════════════════════════════════════════════ */
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-card: #141414;
+            --bg-card-hover: #1a1a1a;
+            --text-primary: #f0ece4;
+            --text-secondary: #8a8680;
+            --accent: #d4ff2b;
+            --accent-dim: #b8e010;
+            --accent-glow: rgba(212, 255, 43, 0.15);
+            --border: #2a2a2a;
+            --border-hover: #3a3a3a;
+            --danger: #ff4d4d;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius: 6px;
+            --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* ═══════════════════════════════════════════════
+           RESET & BASE
+           ═══════════════════════════════════════════════ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ═══════════════════════════════════════════════
+           BACKGROUND TEXTURE
+           ═══════════════════════════════════════════════ */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(ellipse at 20% 50%, rgba(212, 255, 43, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(212, 255, 43, 0.02) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ═══════════════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════════════ */
+        header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 60px 20px 40px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 6rem);
+            letter-spacing: 0.15em;
+            color: var(--text-primary);
+            line-height: 1;
+            position: relative;
+            display: inline-block;
+        }
+
+        
+        .brand-logo {
+            height: clamp(100px, 20vw, 180px);
+            width: auto;
+            display: block;
+            margin: 0 auto;
+            filter: drop-shadow(0 0 20px rgba(212, 255, 43, 0.1));
+            transition: filter var(--transition), transform var(--transition);
+        }
+
+        .brand:hover .brand-logo {
+            filter: drop-shadow(0 0 30px rgba(212, 255, 43, 0.2));
+            transform: scale(1.02);
+        }
+
+        .brand::after {
+            display: none;
+        }
+
+        .brand::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--accent);
+            margin: 16px auto 0;
+            border-radius: 2px;
+        }
+
+
+        .tagline {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-top: 16px;
+            font-weight: 400;
+        }
+
+        /* ═══════════════════════════════════════════════
+           NAV / INFO BAR
+           ═══════════════════════════════════════════════ */
+        .info-bar {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+        }
+
+        .info-bar span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .info-bar a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color var(--transition);
+        }
+        
+        b {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color var(--transition);
+        }
+
+
+        .info-bar a:hover {
+            color: var(--text-primary);
+        }
+
+        /* ═══════════════════════════════════════════════
+           MAIN CONTENT
+           ═══════════════════════════════════════════════ */
+        main {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px 80px;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            letter-spacing: 0.08em;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--text-primary);
+        }
+
+        /* ═══════════════════════════════════════════════
+           PRODUCT GRID
+           ═══════════════════════════════════════════════ */
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: 
+                border-color var(--transition),
+                transform var(--transition),
+                box-shadow var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Product Image */
+        .product-image {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            background: #1c1c1c;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        /* Placeholder styling for demo */
+        .placeholder-img {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .placeholder-img svg {
+            width: 64px;
+            height: 64px;
+            opacity: 0.3;
+        }
+
+        /* Badge */
+        .product-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: var(--accent);
+            color: var(--bg-primary);
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            padding: 4px 12px;
+            border-radius: 3px;
+        }
+
+        /* Product Info */
+        .product-info {
+            padding: 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-name {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .product-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .product-price {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--accent);
+            letter-spacing: 0.03em;
+            margin-bottom: 20px;
+        }
+
+        .product-price span {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-left: 4px;
+        }
+
+        /* Size Selector */
+        .size-selector {
+            margin-bottom: 16px;
+        }
+
+        .size-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 8px;
+        }
+
+        .size-options {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .size-btn {
+            flex: 0 1 auto;
+            min-width: 42px;
+            padding: 10px 12px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-secondary);
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition);
+            text-align: center;
+        }
+
+        .size-btn:hover {
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+        }
+
+        .size-btn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-glow);
+        }
+
+        /* Buy Button */
+        .buy-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px 24px;
+            background: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: var(--radius);
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all var(--transition);
+            text-decoration: none;
+        }
+
+        .buy-btn:hover {
+            background: var(--accent-dim);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .buy-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .buy-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .size-warning {
+            display: none;
+            font-size: 0.8rem;
+            color: var(--danger);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .size-warning.visible {
+            display: block;
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+
+        /* ═══════════════════════════════════════════════
+           HOW IT WORKS SECTION
+           ═══════════════════════════════════════════════ */
+        .how-it-works {
+            margin-top: 80px;
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .step {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+
+        .step-number {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
+        .step-title {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+        }
+
+        .step-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* ═══════════════════════════════════════════════
+           CONTACT SECTION
+           ═══════════════════════════════════════════════ */
+        .contact {
+            margin-top: 60px;
+            text-align: center;
+            padding: 50px 30px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+
+        .contact h2 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            letter-spacing: 0.08em;
+            margin-bottom: 12px;
+        }
+
+        .contact p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            border: 1px solid var(--accent);
+            border-radius: var(--radius);
+            color: var(--accent);
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            letter-spacing: 0.1em;
+            transition: all var(--transition);
+        }
+
+        .contact-link:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        .contact-link svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ═══════════════════════════════════════════════
+           FOOTER
+           ═══════════════════════════════════════════════ */
+        footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color var(--transition);
+        }
+
+        footer a:hover {
+            color: var(--accent);
+        }
+
+        /* ═══════════════════════════════════════════════
+           ANIMATIONS
+           ═══════════════════════════════════════════════ */
+        .product-card {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.6s ease forwards;
+        }
+
+        .product-card:nth-child(1) { animation-delay: 0.1s; }
+        .product-card:nth-child(2) { animation-delay: 0.25s; }
+        .product-card:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ═══════════════════════════════════════════════
+           RESPONSIVE
+           ═══════════════════════════════════════════════ */
+        @media (max-width: 768px) {
+            header {
+                padding: 40px 20px 30px;
+            }
+
+            .products {
+                grid-template-columns: 1fr;
+                max-width: 420px;
+                margin: 0 auto;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin: 40px auto 0;
+            }
+
+            .info-bar {
+                gap: 16px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════════ HEADER ═══════════ -->
+   <header>
+        <a href="index.html" class="brand">
+            <img src="img/Kneipenchor_logo_fertig_big.png" alt="Würzburger Kneipenchor" class="brand-logo">
+        </a>
+        <p class="tagline">Official Merchandise</p>
+    </header>
+
+    <!-- ═══════════ INFO BAR ═══════════ -->
+    <div class="info-bar">
+        <span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Versand innerhalb Deutschlands
+        </span>
+        <span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Bezahlung via PayPal
+        </span>
+        <span>
+            Fragen?
+            <a href="mailto:merch@wuekc.de">merch@wuekc.de</a>
+        </span>
+    </div>
+
+    <!-- ═══════════ PRODUCTS ═══════════ -->
+    <main>
+        <h2 class="section-title">T-SHIRTS</h2>
+
+        <div class="products">
+
+            <!-- ─── PRODUCT 1 ─── -->
+            <div class="product-card" data-product="classic">
+                <div class="product-image">
+                    <img src="img/WUEKC_Kneipenchorliebe_Tshirt_800x800.png" alt="WUEKC Classic Tee">
+                    <span class="product-badge">NEU</span>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">T-Shirt A'Burg-Potsdam-Würze</h3>
+                    <p class="product-desc">
+                        Das offizielle Konzert-Shirt zum 9.5.2026
+                    </p>
+                    <div class="product-price">20,00 € <span>inkl. Versand</span></div>
+                    <div class="size-selector">
+                        <label class="size-label">Größe wählen</label>
+                        <div class="size-options">
+                            <button class="size-btn" data-size="S" onclick="selectSize(this)">S</button>
+                            <button class="size-btn" data-size="M" onclick="selectSize(this)">M</button>
+                            <button class="size-btn" data-size="L" onclick="selectSize(this)">L</button>
+                            <button class="size-btn" data-size="XL" onclick="selectSize(this)">XL</button>
+                        </div>
+                    </div>
+                    <p class="size-warning">Bitte wähle zuerst eine Größe.</p>
+                    <button class="buy-btn" onclick="buyWithPayPal(this)" disabled>
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 2.23A.77.77 0 0 1 5.703 1.6h6.865c2.28 0 3.912.666 4.847 1.978.467.656.737 1.392.807 2.19.072.82-.032 1.792-.315 2.89l-.01.039v.032c-.49 2.473-1.443 4.202-2.832 5.136-1.344.904-3.067 1.363-5.12 1.363H8.472a.942.942 0 0 0-.93.794l-.844 5.35a.641.641 0 0 1-.622.565z"/></svg>
+                        MIT PAYPAL KAUFEN
+                    </button>
+                </div>
+            </div>
+
+            <!-- ─── PRODUCT 2 ─── -->
+            <div class="product-card" data-product="logotee">
+                <div class="product-image">
+                    <img src="img/WKC_Black_Tshirt_750x1000.png" alt="WKC Logo Tee">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">WKC LOGO TEE</h3>
+                    <p class="product-desc">
+                        Das Original. Bio-Baumwolle, Regular Fit.
+                    </p>
+                    <div class="product-price">20,00 € <span>inkl. Versand</span></div>
+                    <div class="size-selector">
+                        <label class="size-label">Größe wählen</label>
+                        <div class="size-options">
+                            <button class="size-btn" data-size="XS" onclick="selectSize(this)">XS</button>
+                            <button class="size-btn" data-size="S" onclick="selectSize(this)">S</button>
+                            <button class="size-btn" data-size="M" onclick="selectSize(this)">M</button>
+                            <button class="size-btn" data-size="L" onclick="selectSize(this)">L</button>
+                            <button class="size-btn" data-size="XL" onclick="selectSize(this)">XL</button>
+                            <button class="size-btn" data-size="XXL" onclick="selectSize(this)">XXL</button>
+                        </div>
+                    </div>
+                    <p class="size-warning">Bitte wähle zuerst eine Größe.</p>
+                    <button class="buy-btn" onclick="buyWithPayPal(this)" disabled>
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 2.23A.77.77 0 0 1 5.703 1.6h6.865c2.28 0 3.912.666 4.847 1.978.467.656.737 1.392.807 2.19.072.82-.032 1.792-.315 2.89l-.01.039v.032c-.49 2.473-1.443 4.202-2.832 5.136-1.344.904-3.067 1.363-5.12 1.363H8.472a.942.942 0 0 0-.93.794l-.844 5.35a.641.641 0 0 1-.622.565z"/></svg>
+                        MIT PAYPAL KAUFEN
+                    </button>
+                </div>
+            </div>
+
+            <!-- ─── PRODUCT 3 ─── -->
+            <div class="product-card" data-product="limochor">
+                <div class="product-image">
+                    <img src="img/Limochor_Yellow_Tshirt_1200x1200.png" alt="Mitgliedershirt Limonadenchor">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">MITGLIEDERSHIRT LIMONADENCHOR</h3>
+                    <p class="product-desc">
+                        Zellerauer Limonaden Chor. Bio-Baumwolle.
+                    </p>
+                    <div class="product-price">20,00 € <span>inkl. Versand</span></div>
+                    <div class="size-selector">
+                        <label class="size-label">Größe wählen</label>
+                        <div class="size-options">
+                            <button class="size-btn" data-size="110/116" onclick="selectSize(this)">110/116</button>
+                            <button class="size-btn" data-size="122/128" onclick="selectSize(this)">122/128</button>
+                            <button class="size-btn" data-size="134/140" onclick="selectSize(this)">134/140</button>
+                            <button class="size-btn" data-size="146/152" onclick="selectSize(this)">146/152</button>
+                            <button class="size-btn" data-size="158/164" onclick="selectSize(this)">158/164</button>
+                            <button class="size-btn" data-size="XS" onclick="selectSize(this)">XS</button>
+                            <button class="size-btn" data-size="S" onclick="selectSize(this)">S</button>
+                            <button class="size-btn" data-size="M" onclick="selectSize(this)">M</button>
+                            <button class="size-btn" data-size="L" onclick="selectSize(this)">L</button>
+                        </div>
+                    </div>
+                    <p class="size-warning">Bitte wähle zuerst eine Größe.</p>
+                    <button class="buy-btn" onclick="buyWithPayPal(this)" disabled>
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 2.23A.77.77 0 0 1 5.703 1.6h6.865c2.28 0 3.912.666 4.847 1.978.467.656.737 1.392.807 2.19.072.82-.032 1.792-.315 2.89l-.01.039v.032c-.49 2.473-1.443 4.202-2.832 5.136-1.344.904-3.067 1.363-5.12 1.363H8.472a.942.942 0 0 0-.93.794l-.844 5.35a.641.641 0 0 1-.622.565z"/></svg>
+                        MIT PAYPAL KAUFEN
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ═══════════ HOW IT WORKS ═══════════ -->
+        <section class="how-it-works">
+            <h2 class="section-title">SO FUNKTIONIERT'S</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">01</div>
+                    <h3 class="step-title">SHIRT WÄHLEN</h3>
+                    <p class="step-desc">Such dir dein Lieblings-Design aus unserer Kollektion aus.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">02</div>
+                    <h3 class="step-title">GRÖSSE WÄHLEN</h3>
+                    <p class="step-desc">Wähle deine Größe von S bis XL.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">03</div>
+                    <h3 class="step-title">KAUFEN</h3>
+                    <p class="step-desc">Klicke auf den Button – du wirst direkt zu PayPal weitergeleitet und kannst dort bezahlen. Sende bitte eine <a href="mailto:merch@wuekc.de"><b>Mail</b></a> an uns, wenn Du anders zahlen willst oder verschiedene Motive und Größen in einer Bestellung brauchst</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════ CONTACT ═══════════ -->
+        <section class="contact">
+            <h2>FRAGEN ZUR BESTELLUNG?</h2>
+            <p>Ob Größenberatung, Lieferzeit oder alternative Zahlungsweisen: wir lösen das zusammen – schreib uns einfach eine E-Mail.</p>
+            <a href="mailto:merch@wuekc.de" class="contact-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg>
+                MERCH@WUEKC.DE
+            </a>
+        </section>
+
+    </main>
+
+    <!-- ═══════════ FOOTER ═══════════ -->
+    <footer>
+        <p>&copy; 2026 Würzburger Kneipenchor. Alle Rechte vorbehalten. | <a href="mailto:merch@wuekc.de">Kontakt</a></p>
+    </footer>
+
+    <!-- ═══════════════════════════════════════════════════
+         JAVASCRIPT – PayPal Payment Links Konfiguration
+         ═══════════════════════════════════════════════════ -->
+    <script>
+        /*
+         * ╔═══════════════════════════════════════════════════════════════╗
+         * ║                    PAYPAL LINKS EINTRAGEN                    ║
+         * ╠═══════════════════════════════════════════════════════════════╣
+         * ║                                                               ║
+         * ║  Ersetze die Platzhalter-URLs unten durch deine echten        ║
+         * ║  PayPal Payment Links.                                        ║
+         * ║                                                               ║
+         * ║  Du erstellst pro Produkt + Größe EINEN Link in PayPal.       ║
+         * ║  Das sind 3 Produkte × 4 Größen = 12 Links insgesamt.         ║
+         * ║                                                               ║
+         * ║  Anleitung:                                                   ║
+         * ║  1. Gehe zu https://www.paypal.com/buttons                    ║
+         * ║  2. Logge dich in dein PayPal-Geschäftskonto ein              ║
+         * ║  3. Klicke auf "Zahlungslink erstellen"                       ║
+         * ║  4. Gib Produktname ein (z.B. "Classic Tee - Größe M")        ║
+         * ║  5. Setze den Preis                                           ║
+         * ║  6. Optional: Bild und Beschreibung hinzufügen                ║
+         * ║  7. Kopiere den generierten Link                              ║
+         * ║  8. Füge ihn unten an der passenden Stelle ein                ║
+         * ║                                                               ║
+         * ╚═══════════════════════════════════════════════════════════════╝
+         */
+        const PAYPAL_LINKS = {
+            // ─── Konzert-Tee A'Burg-Potsdam-Würze (20,00 €) ──────
+            "classic": {
+                "S":  "https://www.paypal.com/ncp/payment/52ZG5CB28BDTC",
+                "M":  "https://www.paypal.com/ncp/payment/ATQ9CF8J5CKRC",
+                "L":  "https://www.paypal.com/ncp/payment/L6PZUT2JQ86ZU",
+                "XL": "https://www.paypal.com/ncp/payment/LC7MFUXNFS78L"
+            },
+            // ─── WKC Logo Tee XS-XXL (20,00 €) ───────────────────
+            "logotee": {
+                "XS":  "https://www.paypal.com/ncp/payment/F8W4D93P6VZ4E",
+                "S":   "https://www.paypal.com/ncp/payment/RVS2PPQJDWKHE",
+                "M":   "https://www.paypal.com/ncp/payment/3JARWEDR5KZRS",
+                "L":   "https://www.paypal.com/ncp/payment/TCUKFXSBF2T38",
+                "XL":  "https://www.paypal.com/ncp/payment/CECKATURN23TC",
+                "XXL": "https://www.paypal.com/ncp/payment/CY9RVHMTNCZJN"
+            },
+            // ─── Mitgliedershirt Limonadenchor (20,00 €) ──────────
+            "limochor": {
+                "110/116": "https://www.paypal.com/ncp/payment/L5X3NEZ78FAZC",
+                "122/128": "https://www.paypal.com/ncp/payment/PP2ZVNGGBBN4Y",
+                "134/140": "https://www.paypal.com/ncp/payment/B34ZAT64N4FTA",
+                "146/152": "https://www.paypal.com/ncp/payment/E9WMS2HLY5WLA",
+                "158/164": "https://www.paypal.com/ncp/payment/PQVLSRYBN9YW4",
+                "XS":      "https://www.paypal.com/ncp/payment/38AE9X8DTNSEU",
+                "S":       "https://www.paypal.com/ncp/payment/3AL6ZUUWX8EH2",
+                "M":       "https://www.paypal.com/ncp/payment/25855JGFLPCY4",
+                "L":       "https://www.paypal.com/ncp/payment/AKWB6KTV2XYTS"
+            }
+        };
+
+        // ─── SIZE SELECTION ─────────────────────────────────
+        function selectSize(btn) {
+            const card = btn.closest('.product-card');
+            // Remove active from siblings
+            card.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+            // Set active
+            btn.classList.add('active');
+            // Enable buy button
+            card.querySelector('.buy-btn').disabled = false;
+            // Hide warning
+            card.querySelector('.size-warning').classList.remove('visible');
+        }
+
+        // ─── BUY WITH PAYPAL ────────────────────────────────
+        function buyWithPayPal(btn) {
+            const card = btn.closest('.product-card');
+            const product = card.dataset.product;
+            const activeSize = card.querySelector('.size-btn.active');
+
+            if (!activeSize) {
+                card.querySelector('.size-warning').classList.add('visible');
+                return;
+            }
+
+            const size = activeSize.dataset.size;
+            const url = PAYPAL_LINKS[product][size];
+
+            if (url && !url.includes('DEIN_LINK')) {
+                // Echten PayPal-Link öffnen
+                window.open(url, '_blank');
+            } else {
+                // Demo-Modus: Hinweis zeigen
+                alert(
+                    `Demo-Modus!
+
+` +
+                    `Produkt: ${product.toUpperCase()}
+` +
+                    `Größe: ${size}
+
+` +
+                    `Hier würde der PayPal Payment Link geöffnet:
+` +
+                    `${url}
+
+` +
+                    `Ersetze die Platzhalter-URLs im JavaScript durch deine echten PayPal Payment Links.`
+                );
+            }
+        }
+    </script>
+
+</body>
+</html>
