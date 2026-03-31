@@ -247,53 +247,6 @@
             transform: scale(1.05);
         }
 
-        /* Front/Back Image Toggle */
-        .product-image-flip {
-            cursor: pointer;
-        }
-
-        .product-image-flip .shirt-back {
-            display: none;
-        }
-
-        .product-image-flip .shirt-front:not(.active),
-        .product-image-flip .shirt-back:not(.active) {
-            display: none;
-        }
-
-        .product-image-flip .shirt-front.active,
-        .product-image-flip .shirt-back.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0.5; }
-            to { opacity: 1; }
-        }
-
-        .flip-hint {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.7);
-            color: var(--text-primary);
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 0.72rem;
-            letter-spacing: 0.05em;
-            pointer-events: none;
-            opacity: 0.8;
-            transition: opacity var(--transition);
-            z-index: 5;
-            white-space: nowrap;
-        }
-
-        .product-image-flip:hover .flip-hint {
-            opacity: 1;
-        }
-
         /* Placeholder styling for demo */
         .placeholder-img {
             width: 100%;
@@ -675,11 +628,9 @@
 
             <!-- ─── PRODUCT 1 ─── -->
             <div class="product-card" data-product="classic">
-                <div class="product-image product-image-flip" onclick="toggleShirtView(this)">
-                    <img src="img/sols_legend_03981_lilacshirt_front_print.jpg" alt="Konzert-Tee Vorderseite" class="shirt-front active">
-                    <img src="img/sols_legend_03981_lilacshirt_back_print.jpg" alt="Konzert-Tee Rückseite" class="shirt-back">
+                <div class="product-image">
+                    <img src="img/WUEKC_Kneipenchorliebe_Tshirt_800x800.png" alt="WUEKC Classic Tee">
                     <span class="product-badge">NEU</span>
-                    <span class="flip-hint">&#x21C4; Klick für Rückseite</span>
                 </div>
                 <div class="product-info">
                     <h3 class="product-name">T-Shirt A'Burg-Potsdam-Würze</h3>
@@ -899,29 +850,21 @@
             } else {
                 // Demo-Modus: Hinweis zeigen
                 alert(
-                    `Demo-Modus!\n\n` +
-                    `Produkt: ${product.toUpperCase()}\n` +
-                    `Größe: ${size}\n\n` +
-                    `Hier würde der PayPal Payment Link geöffnet:\n` +
-                    `${url}\n\n` +
+                    `Demo-Modus!
+
+` +
+                    `Produkt: ${product.toUpperCase()}
+` +
+                    `Größe: ${size}
+
+` +
+                    `Hier würde der PayPal Payment Link geöffnet:
+` +
+                    `${url}
+
+` +
                     `Ersetze die Platzhalter-URLs im JavaScript durch deine echten PayPal Payment Links.`
                 );
-            }
-        }
-
-        // ─── FRONT/BACK IMAGE TOGGLE ─────────────────────────
-        function toggleShirtView(container) {
-            const front = container.querySelector('.shirt-front');
-            const back = container.querySelector('.shirt-back');
-            const hint = container.querySelector('.flip-hint');
-            if (front.classList.contains('active')) {
-                front.classList.remove('active');
-                back.classList.add('active');
-                hint.innerHTML = '&#x21C4; Klick für Vorderseite';
-            } else {
-                back.classList.remove('active');
-                front.classList.add('active');
-                hint.innerHTML = '&#x21C4; Klick für Rückseite';
             }
         }
     </script>
